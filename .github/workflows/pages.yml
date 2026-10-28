@@ -51,12 +51,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Usar o build do aplicativo como origem do Pages
+      - name: Aguardar origem GitHub Actions no Pages
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api --method PUT "repos/$GITHUB_REPOSITORY/pages" -f build_type=workflow
-          gh api "repos/$GITHUB_REPOSITORY/pages" --jq '{build_type, html_url}'
+          for attempt in $(seq 1 30); do
+            source=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type)
+            echo "Origem atual do Pages: $source"
+            if [ "$source" = "workflow" ]; then
+              echo "Origem confirmada: GitHub Actions." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            if [ "$attempt" = "1" ]; then
+              echo "Selecione GitHub Actions em https://github.com/$GITHUB_REPOSITORY/settings/pages (Build and deployment > Source). O deploy aguardará essa alteração por até cinco minutos." >> "$GITHUB_STEP_SUMMARY"
+            fi
+            sleep 10
+          done
+          echo "::error::No repositório, abra Settings > Pages > Build and deployment > Source e selecione GitHub Actions. Depois execute este workflow novamente."
+          exit 1
       - name: Publicar
         id: deployment
         uses: actions/deploy-pages@v4
