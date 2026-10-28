@@ -51,7 +51,7 @@
   async function open(event: Event, button?: HTMLButtonElement) {
     if (transitioning) return;
     origin = button;
-    onselect(event.slug);
+    if (location.hash.slice(1) !== event.slug) onselect(event.slug);
     await changePhoto(async () => {
       const image = origin?.querySelector('img');
       if (image) image.style.viewTransitionName = '';
