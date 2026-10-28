@@ -39,7 +39,7 @@
     {#if selected}
       {#key selected.slug}
         <article class="slide" aria-roledescription="slide" aria-label={`${index + 1} de ${events.length}`}>
-          <div class="poster-wrap"><img class="poster" class:duotone={selected.posterIsPhoto} src={`${base}/cartazes/${selected.slug}.jpg`} alt={`Cartaz de ${selected.title}`} width={selected.posterWidth} height={selected.posterHeight} loading="lazy" decoding="async" /><span class="poster-caption">SEMNOME / {String(index + 1).padStart(2, '0')}</span></div>
+          <div class="poster-wrap"><img class="poster" class:duotone={selected.posterIsPhoto} src={`${base}/cartazes/${selected.slug}.jpg`} alt={`Cartaz de ${selected.title}`} width={selected.posterWidth} height={selected.posterHeight} loading="lazy" decoding="async" /><span class="poster-caption">Culturando / {String(index + 1).padStart(2, '0')}</span></div>
           <div class="information">
             <div class="date numerals"><time datetime={selected.date}>{displayDate(selected.date)}</time><span>{selected.time}</span></div>
             <h3>{selected.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}</h3>

@@ -17,11 +17,11 @@
 </script>
 
 <svelte:head>
-  <title>{data.event.title} — SEMNOME</title>
+  <title>{data.event.title} — Culturando</title>
   <meta name="description" content={data.event.summary} />
   <link rel="canonical" href={data.canonical} />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="SEMNOME" />
+  <meta property="og:site_name" content="Culturando" />
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:title" content={data.event.title} />
   <meta property="og:description" content={data.event.summary} />
@@ -33,9 +33,9 @@
   <meta property="og:image:alt" content={`Cartaz de ${data.event.title}`} />
 </svelte:head>
 <main id="conteudo" class="detail">
-  <nav aria-label="Retorno"><a href={`${base}/#${data.event.slug}`}><Arrow direction="left" /> Voltar à agenda</a><a class="brand" href={`${base}/`}>SEMNOME</a></nav>
+  <nav aria-label="Retorno"><a href={`${base}/#${data.event.slug}`}><Arrow direction="left" /> Voltar à agenda</a><a class="brand" href={`${base}/`}>Culturando</a></nav>
   <article>
-    <header><div class="section-meta"><span>Palmas, Tocantins / {data.event.category}</span><span>SEMNOME / Programação cultural</span></div><h1>{data.event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}</h1></header>
+    <header><div class="section-meta"><span>Palmas, Tocantins / {data.event.category}</span><span>Culturando / Programação cultural</span></div><h1>{data.event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}</h1></header>
     <div class="event-grid">
       <div class="detail-poster"><img class:duotone={data.event.posterIsPhoto} src={`${base}/cartazes/${data.event.slug}.jpg`} alt={`Cartaz de ${data.event.title}`} width={data.event.posterWidth} height={data.event.posterHeight} /></div>
       <div class="body-copy">
@@ -73,5 +73,5 @@
   .external { display: flex; align-items: center; justify-content: space-between; gap: .8rem; background: var(--coral); padding: 1rem; margin-top: 2rem; font-size: .85rem; font-weight: 700; }
   .back { display: flex; gap: 1rem; align-items: center; font-size: .8rem; margin-top: 2rem; }
   footer { margin-top: 3rem; padding: 1.5rem 0; font-size: .7rem; border-top: var(--line); }
-  @media (max-width: 700px) { .detail { padding-top: 1.2rem; } nav { margin-bottom: 2.5rem; } .brand { font-size: 1.3rem; } nav a:first-child { font-size: .65rem; } .section-meta { font-size: .5rem; } .section-meta span:last-child { display: none; } h1 { font-size: clamp(3rem, 14vw, 5rem); margin-bottom: 2rem; } .event-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  @media (max-width: 700px) { .detail { padding-top: 1.2rem; } nav { margin-bottom: 2.5rem; } .brand { font-size: 1.1rem; } nav a:first-child { font-size: .65rem; } .section-meta { font-size: .5rem; } .section-meta span:last-child { display: none; } h1 { font-size: clamp(3rem, 14vw, 5rem); margin-bottom: 2rem; } .event-grid { grid-template-columns: 1fr; gap: 2rem; } }
 </style>

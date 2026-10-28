@@ -1,6 +1,6 @@
-# SEMNOME — auditoria das fases 2 a 5
+# Culturando — auditoria das fases 2 a 5
 
-Verificação em 28/10/2026. Implementação local, sem push ou deploy. A validação da geografia real do mapa está pendente de acesso de rede; os testes com tiles simulados não substituem essa verificação.
+Verificação em 28/10/2026. As capturas e os logs abaixo registram a identidade anterior, SEMNOME; o projeto foi posteriormente renomeado para Culturando. Implementação local, sem push ou deploy. A validação da geografia real do mapa está pendente de acesso de rede; os testes com tiles simulados não substituem essa verificação.
 
 ## Fase 2 — sistema visual e hero
 
@@ -108,3 +108,9 @@ Ferramentas de sessão: Chromium instalado e Playwright/Axe em `/tmp/semnome-bro
 Para verificar o mapa real no ambiente, revise e salve `tiles.openfreemap.org` nas configurações de rede e publique o ambiente. A gravação do rascunho não aplicou nem publicou essa configuração. Depois, reabra o mapa e confirme ruas, água e atribuição com os tiles reais. Não é necessária chave de API.
 
 Para lançar o site: remova os seis exemplos listados no README, forneça conteúdo e imagens autorizados, habilite GitHub Pages/Actions e publique as alterações pelo fluxo do repositório. Nenhum push, merge ou deploy foi realizado nesta tarefa.
+
+## Renomeação para Culturando
+
+Nome atualizado no hero, navegação, rodapé, favicon, cartazes, conteúdo, títulos, Open Graph, documentação e verificação de publicação. O pacote npm também passa a se chamar `culturando`. As capturas e logs anteriores foram preservados como registro histórico.
+
+`npm run check`, `npm run audit`, `npm test` (9 aprovados) e `npm run build` passaram. O Chromium verificou a identidade, metadados, páginas de evento e ausência de overflow em 1440×900 e 390×844. Capturas atualizadas: [desktop](evidence/culturando-1440.png) e [celular](evidence/culturando-390.png).

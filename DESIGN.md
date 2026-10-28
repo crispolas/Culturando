@@ -1,4 +1,4 @@
-# DESIGN.md — SEMNOME
+# DESIGN.md — Culturando
 
 ## Direção (decidida; não reinterpretar)
 Conceito: "parede de cartazes". O site é um muro de rua onde a cena cultural de Palmas está colada: cartazes sobrepostos, fotografias recortadas em duotone, tipografia enorme, papel com grão. O mapa é uma serigrafia da cidade.
@@ -20,7 +20,7 @@ Ponto de partida (verificar disponibilidade): display = Archivo (eixo de largura
 Fontes auto-hospedadas (Fontsource), sem Google Fonts em tempo de execução. Tamanhos fluidos com clamp().
 
 ## Seções
-**Hero.** Wordmark SEMNOME ocupando ao menos 80% da largura em desktop. As letras funcionam como janelas: fotografias duotone (paleta) alternam dentro delas via máscara SVG. 5–7 recortes fotográficos em três camadas de profundidade respondem ao cursor (translate3d, até 24 px, com suavização). "Seu mapa cultural" em ink sobre faixa coral inclinada até 2°. No celular, sem cursor: deriva lenta e discreta.
+**Hero.** Wordmark Culturando ocupando ao menos 80% da largura em desktop. As letras funcionam como janelas: fotografias duotone (paleta) alternam dentro delas via máscara SVG. 5–7 recortes fotográficos em três camadas de profundidade respondem ao cursor (translate3d, até 24 px, com suavização). "Seu mapa cultural" em ink sobre faixa coral inclinada até 2°. No celular, sem cursor: deriva lenta e discreta.
 **Navbar em ilha.** Cápsula compacta, sólida (ink), sem blur nem vidro. Expande ao foco/hover com Eventos, Mapa e Sobre. Ponto coral indica a seção ativa. Operável por teclado.
 **Carrossel.** Cartaz grande à esquerda (qualquer proporção, sem distorcer), informações à direita: título em display, data/horário em numerais tabulares, local, descrição curta, link. A cada evento, a transição troca o cartaz (clip-path), o texto e a cor de realce da seção. Setas, teclado, toque e URL própria por evento (#slug). Eventos passados saem em tempo de execução, usando o fuso America/Araguaina.
 **Mapa.** MapLibre sobre dados OpenStreetMap; verificar uma fonte de tiles vetoriais gratuita, sem chave, e manter a atribuição obrigatória. Estilo construído em código: fundo paper, ruas em ink com espessura por hierarquia, água em mint, sem edifícios, rótulos mínimos. Centro aproximado -10.18, -48.33 (conferir), com limites de navegação. Marcadores por categoria, agrupamento quando houver densidade, popup em formato de cartaz. Selecionar um evento no carrossel move o mapa até ele e vice-versa. Filtros por categoria como etiquetas tipográficas. No celular: mapa em tela cheia com painel inferior.

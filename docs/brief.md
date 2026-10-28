@@ -1,14 +1,14 @@
-# SEMNOME — O que é o projeto e qual é sua direção criativa?
+# Culturando — O que é o projeto e qual é sua direção criativa?
 
-## 1. O que é o SEMNOME?
+## 1. O que é o Culturando?
 
-O SEMNOME é um site de divulgação e descoberta de eventos culturais da cidade de Palmas, no Tocantins.
+O Culturando é um site de divulgação e descoberta de eventos culturais da cidade de Palmas, no Tocantins.
 
 A proposta é criar um espaço digital onde as pessoas possam descobrir o que está acontecendo culturalmente na cidade, como apresentações de dança, espetáculos de teatro, shows, exposições, festivais, oficinas e outras manifestações artísticas.
 
 O projeto surge da ideia de que a programação cultural de uma cidade muitas vezes está espalhada por diferentes lugares, principalmente redes sociais, perfis de artistas e páginas de organizadores.
 
-O SEMNOME pretende reunir essas informações em um único ambiente, facilitando a descoberta de eventos e valorizando a produção artística local.
+O Culturando pretende reunir essas informações em um único ambiente, facilitando a descoberta de eventos e valorizando a produção artística local.
 
 O objetivo não é vender ingressos, organizar eventos ou funcionar como uma rede social. É dar visibilidade ao que já acontece na cidade.
 
@@ -16,7 +16,7 @@ Inicialmente, a seleção e publicação dos eventos serão feitas manualmente p
 
 ## 2. Qual é a proposta criativa?
 
-O SEMNOME não deve parecer um portal tradicional de notícias, uma agenda institucional ou um catálogo genérico de eventos.
+O Culturando não deve parecer um portal tradicional de notícias, uma agenda institucional ou um catálogo genérico de eventos.
 
 A ideia é que o próprio site seja uma expressão artística, transmitindo a diversidade, a criatividade e a energia da cultura local.
 
@@ -48,7 +48,7 @@ A página principal terá três grandes seções, seguindo o esboço desenhado o
 
 13
 
-O nome SEMNOME aparecerá em grande destaque, acompanhado da frase:
+O nome Culturando aparecerá em grande destaque, acompanhado da frase:
 
 Seu mapa cultural.
 
@@ -101,7 +101,7 @@ Ao selecionar um marcador, o site poderá mostrar informações do evento corres
 
 Também poderão existir filtros por categorias culturais, como dança, música, teatro e exposições.
 
-O mapa deverá preservar as ruas e a geografia real da cidade, mas terá uma aparência personalizada para combinar com a identidade visual do SEMNOME.
+O mapa deverá preservar as ruas e a geografia real da cidade, mas terá uma aparência personalizada para combinar com a identidade visual do Culturando.
 
 A ideia não é criar um mapa fictício, em pixel art ou 3D, e sim transformar um mapa convencional em parte da experiência artística do site.
 
@@ -133,7 +133,7 @@ Grafite
 
 As cores não precisam aparecer todas ao mesmo tempo ou em quantidades iguais. Elas devem ser usadas de maneira intencional, criando contraste e identidade.
 
-A tipografia também será um elemento importante. O nome SEMNOME poderá aparecer em letras grandes e expressivas, enquanto as informações dos eventos utilizarão fontes mais simples e legíveis.
+A tipografia também será um elemento importante. O nome Culturando poderá aparecer em letras grandes e expressivas, enquanto as informações dos eventos utilizarão fontes mais simples e legíveis.
 
 Ainda não haverá uma logomarca. Inicialmente, o próprio nome será o principal elemento de identificação.
 
@@ -172,9 +172,9 @@ O Figma será utilizado para explorar a direção artística, construir as inter
 
 O site será desenvolvido com foco inicial na experiência desktop, mas também deverá funcionar em dispositivos móveis.
 
-## 7. A essência do SEMNOME
+## 7. A essência do Culturando
 
-O SEMNOME é, acima de tudo, um projeto de valorização da cultura local.
+O Culturando é, acima de tudo, um projeto de valorização da cultura local.
 
 Sua função prática é permitir que alguém entre no site e descubra rapidamente quais eventos estão acontecendo em Palmas, quando acontecerão e onde serão realizados.
 
@@ -182,10 +182,10 @@ Mas sua ambição criativa vai além disso.
 
 O site não deve apenas mostrar que existe cultura em Palmas. Ele deve transmitir visualmente a sensação de que a cidade tem uma cena cultural viva, diversa e interessante.
 
-O SEMNOME deve ser simples de usar, mas não necessariamente simples de olhar. Deve ter cores, fotografias, movimento, identidade e espaço para experimentação.
+O Culturando deve ser simples de usar, mas não necessariamente simples de olhar. Deve ter cores, fotografias, movimento, identidade e espaço para experimentação.
 
 Não queremos criar mais um site de eventos que poderia pertencer a qualquer cidade.
 
 Queremos criar uma experiência digital que tenha personalidade própria e que faça sentido justamente por estar conectada à arte e à cultura de Palmas.
 
-Em uma frase: o SEMNOME é uma agenda cultural interativa de Palmas, apresentada como uma experiência artística digital, que combina descoberta de eventos, identidade visual expressiva e exploração geográfica da cidade.
+Em uma frase: o Culturando é uma agenda cultural interativa de Palmas, apresentada como uma experiência artística digital, que combina descoberta de eventos, identidade visual expressiva e exploração geográfica da cidade.

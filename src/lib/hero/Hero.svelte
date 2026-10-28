@@ -23,10 +23,10 @@
 </script>
 <section id="inicio" class="hero" bind:this={wall} onpointermove={move} onpointerleave={() => { x = 0; y = 0; }} aria-labelledby="wordmark" style={`--x:${x}px;--y:${y}px`}>
   <div class="masthead"><span>Palmas, Tocantins</span><span>Cultura fora da moldura.</span></div>
-  <h1 id="wordmark"><span class="sr-only">SEMNOME — Seu mapa cultural</span>
+  <h1 id="wordmark"><span class="sr-only">Culturando — Seu mapa cultural</span>
     <svg class="wordmark" viewBox="0 0 1400 270" aria-hidden="true">
       <defs>
-        <mask id="letter-windows"><rect width="1400" height="270" fill="black" /><text x="0" y="240" textLength="1390" lengthAdjust="spacingAndGlyphs" fill="white">SEMNOME</text></mask>
+        <mask id="letter-windows"><rect width="1400" height="270" fill="black" /><text x="0" y="240" textLength="1390" lengthAdjust="spacingAndGlyphs" fill="white">CULTURANDO</text></mask>
 
       </defs>
       <g mask="url(#letter-windows)">
@@ -55,7 +55,7 @@
   .masthead { display: flex; gap: 2.5rem; text-transform: uppercase; letter-spacing: .12em; font-size: .65rem; padding-top: .4rem; }
   h1 { margin-top: clamp(4rem, 7vw, 7rem); position: relative; z-index: 1; }
   .wordmark { width: 100%; overflow: visible; display: block; }
-  .wordmark text { font-family: var(--display); font-size: 280px; font-weight: 900; letter-spacing: -.05em; }
+  .wordmark text { font-family: var(--display); font-size: 280px; font-stretch: 75%; font-weight: 900; letter-spacing: -.05em; }
   .window-image { opacity: 0; animation: images 18s infinite; animation-delay: var(--delay); }
   @keyframes images { 0%, 28% { opacity: .88; } 34%, 94% { opacity: 0; } }
   .wall { position: absolute; top: 40%; left: 0; width: 100%; height: 40%; pointer-events: none; }

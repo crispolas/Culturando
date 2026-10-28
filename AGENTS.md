@@ -1,4 +1,4 @@
-# AGENTS.md — SEMNOME
+# AGENTS.md — Culturando
 
 Site de agenda cultural de Palmas (TO). Leia DESIGN.md antes de qualquer trabalho visual e docs/brief.md para o contexto do projeto.
 

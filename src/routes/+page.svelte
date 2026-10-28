@@ -31,7 +31,7 @@
     return () => { clearInterval(timer); document.removeEventListener('visibilitychange', refresh); window.removeEventListener('hashchange', readHash); };
   });
 </script>
-<svelte:head><title>SEMNOME — Agenda cultural de Palmas</title><meta name="description" content="Agenda cultural de Palmas, Tocantins. Datas, horários e locais dos eventos." /></svelte:head>
+<svelte:head><title>Culturando — Agenda cultural de Palmas</title><meta name="description" content="Agenda cultural de Palmas, Tocantins. Datas, horários e locais dos eventos." /></svelte:head>
 <Island />
 <main id="conteudo">
   <Hero events={visible} />
@@ -40,10 +40,10 @@
   <CityMap events={filtered} allEvents={visible} venues={data.venues} {selected} {category} oncategory={(value) => category = value} onselect={select} />
   <noscript>Ative o JavaScript para consultar a programação atualizada.</noscript>
   <section id="sobre" class="about" aria-labelledby="about-heading">
-    <div class="section-meta"><span>03 / Sobre o SEMNOME</span><span>Daqui. Para quem está aqui.</span></div>
-    <div class="about-copy"><h2 id="about-heading">A cidade<br />também<br />é palco<span>.</span></h2><div><p>A cultura de Palmas não cabe numa moldura.</p><p>O SEMNOME reúne encontros, sons, movimentos e histórias que acontecem por aqui. Uma agenda independente, feita por curadoria, para aproximar quem faz e quem vive a cultura.</p><p class="small">Um lugar para a programação da cidade.<br />E para você fazer parte da plateia.</p><a href="#eventos">Voltar à programação ↑</a></div></div>
+    <div class="section-meta"><span>03 / Sobre o Culturando</span><span>Daqui. Para quem está aqui.</span></div>
+    <div class="about-copy"><h2 id="about-heading">A cidade<br />também<br />é palco<span>.</span></h2><div><p>A cultura de Palmas não cabe numa moldura.</p><p>O Culturando reúne encontros, sons, movimentos e histórias que acontecem por aqui. Uma agenda independente, feita por curadoria, para aproximar quem faz e quem vive a cultura.</p><p class="small">Um lugar para a programação da cidade.<br />E para você fazer parte da plateia.</p><a href="#eventos">Voltar à programação ↑</a></div></div>
   </section>
-  <footer><a href="#inicio" class="footer-mark">SEMNOME</a><div><span>Seu mapa cultural.</span><span>Palmas, Tocantins / Brasil</span></div><a href="#inicio">De volta ao começo ↑</a></footer>
+  <footer><a href="#inicio" class="footer-mark">CULTURANDO</a><div><span>Seu mapa cultural.</span><span>Palmas, Tocantins / Brasil</span></div><a href="#inicio">De volta ao começo ↑</a></footer>
 </main>
 <style>
   .event-anchors { position: relative; }
@@ -59,8 +59,8 @@
   .about .small { font-size: .75rem; margin-top: 1.3rem; }
   .about a { display: inline-block; margin-top: 2rem; font-size: .8rem; }
   footer { padding: 2.5rem var(--gutter) 2rem; }
-  .footer-mark { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(4rem, 16vw, 18rem); line-height: 1; letter-spacing: -.075em; text-decoration: none; }
+  .footer-mark { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(3rem, 13.5vw, 14rem); line-height: 1; letter-spacing: -.075em; text-decoration: none; }
   footer > div { display: flex; justify-content: space-between; gap: 1rem; border-top: var(--line); padding-top: 1rem; font-size: .7rem; }
   footer > a:last-child { display: block; margin-top: 2rem; text-align: right; font-size: .65rem; }
-  @media (max-width: 700px) { .about { padding-top: 2rem; padding-bottom: 3rem; } .about-copy { grid-template-columns: 1fr; gap: 2rem; padding-top: 2rem; } .section-meta { font-size: .55rem; } .footer-mark { font-size: 15.8vw; } }
+  @media (max-width: 700px) { .about { padding-top: 2rem; padding-bottom: 3rem; } .about-copy { grid-template-columns: 1fr; gap: 2rem; padding-top: 2rem; } .section-meta { font-size: .55rem; } .footer-mark { font-size: 11.8vw; } }
 </style>

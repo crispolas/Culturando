@@ -1,4 +1,4 @@
-# SEMNOME
+# Culturando
 
 Agenda cultural de Palmas (TO). Conteúdo em Markdown e JSON, sem banco de dados, login ou painel obrigatório. SvelteKit 2, Svelte 5 com runes, TypeScript estrito e geração estática. A interface usa a direção “parede de cartazes”: tipografia variável, papel com grão, duotone, carrossel e mapa sincronizados. Sem fotos autorizadas, os seis exemplos usam cartazes “FOTO PENDENTE”.
 

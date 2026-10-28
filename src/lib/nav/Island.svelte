@@ -16,7 +16,7 @@
   });
 </script>
 <nav bind:this={island} class:expanded aria-label="Principal" onmouseenter={() => expanded = true} onmouseleave={() => { if (!island.contains(document.activeElement)) expanded = false; }}>
-  <button class="toggle" aria-label="Abrir navegação" aria-expanded={expanded} aria-controls="island-links" onclick={() => expanded = !expanded}>S/N <span aria-hidden="true">{expanded ? '−' : '+'}</span></button>
+  <button class="toggle" aria-label="Abrir navegação" aria-expanded={expanded} aria-controls="island-links" onclick={() => expanded = !expanded}>C. <span aria-hidden="true">{expanded ? '−' : '+'}</span></button>
   <div id="island-links" hidden={!expanded}>
     {#each [['eventos', 'Eventos'], ['mapa', 'Mapa'], ['sobre', 'Sobre']] as [id, label]}
       <a href={`#${id}`} aria-current={active === id ? 'location' : undefined} onclick={() => expanded = false}>{label}</a>
