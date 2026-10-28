@@ -1,103 +1,248 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import { base } from '$app/paths';
-  import { displayDate } from '$lib/content/dates';
+  import { displayDate, localDate } from '$lib/content/dates';
   import Arrow from '$lib/nav/Arrow.svelte';
-  import { categories } from './categories';
   import type { Event, Venue } from './types';
-  let { events, venues, selected, onselect }: { events: Event[]; venues: Venue[]; selected: Event | undefined; onselect: (slug: string) => void } = $props();
-  const index = $derived(events.findIndex((event) => event.slug === selected?.slug));
-  const venue = $derived(venues.find((place) => place.slug === selected?.venue));
-  const accent = $derived(selected ? categories[selected.category as keyof typeof categories].color : 'var(--sun)');
-  let region: HTMLDivElement;
-  let startX = 0;
-  let startY = 0;
-  function step(direction: number) {
-    if (events.length < 2) return;
-    onselect(events[(index + direction + events.length) % events.length].slug);
+
+  let { events, allEvents, venues, selected, request, onselect }: { events: Event[]; allEvents: Event[]; venues: Venue[]; selected: Event | undefined; request: { slug: string } | undefined; onselect: (slug: string) => void } = $props();
+  let general = $state(false);
+  let hovered = $state(false);
+  let focused = $state(false);
+  let paused = $state(false);
+  let direction = $state(1);
+  let opened = $state<Event>();
+  let rail: HTMLDivElement;
+  let track: HTMLDivElement;
+  let group: HTMLDivElement;
+  let dialog: HTMLDialogElement;
+  let origin = $state<HTMLButtonElement>();
+  let offset = 0;
+  let period = 0;
+  let copies = $state(2);
+  let transitioning = false;
+  let touchX = 0;
+  let dragged = false;
+  const venue = $derived(venues.find((place) => place.slug === opened?.venue));
+
+  function paint() {
+    if (!period || !track) return;
+    offset = (offset % period + period) % period;
+    track.style.transform = `translate3d(${-offset}px,0,0)`;
   }
-  function keys(event: KeyboardEvent) {
-    if ((event.target as HTMLElement).closest('a')) return;
-    if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
-    if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
-    if (event.key === 'Home' && events.length) { event.preventDefault(); onselect(events[0].slug); }
-    if (event.key === 'End' && events.length) { event.preventDefault(); onselect(events[events.length - 1].slug); }
+  function steer(value: number) {
+    direction = value;
+    offset += value * (group?.querySelector('button')?.getBoundingClientRect().width || 240);
+    paint();
   }
+  async function changePhoto(update: () => Promise<void>) {
+    if (transitioning) return;
+    transitioning = true;
+    const image = origin?.querySelector('img');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (document.startViewTransition && !reduce) {
+      if (image && !opened) image.style.viewTransitionName = 'event-photo';
+      const transition = document.startViewTransition(update);
+      try { await transition.finished; } finally { if (image) image.style.viewTransitionName = ''; transitioning = false; }
+    } else {
+      await update(); transitioning = false;
+    }
+  }
+  async function open(event: Event, button?: HTMLButtonElement) {
+    if (transitioning) return;
+    origin = button;
+    onselect(event.slug);
+    await changePhoto(async () => {
+      const image = origin?.querySelector('img');
+      if (image) image.style.viewTransitionName = '';
+      opened = event;
+      await tick();
+      dialog.showModal();
+    });
+  }
+  async function close(restoreFocus = true) {
+    await changePhoto(async () => {
+      dialog.close(); opened = undefined;
+      await tick();
+      const image = origin?.querySelector('img');
+      if (image) image.style.viewTransitionName = 'event-photo';
+      if (restoreFocus) origin?.focus({ preventScroll: true });
+      else { origin?.blur(); focused = false; }
+      hovered = rail.matches(':hover');
+    });
+  }
+  $effect(() => {
+    const slug = request?.slug;
+    if (slug) untrack(() => { const event = allEvents.find((item) => item.slug === slug); if (event) open(event); });
+  });
+  $effect(() => {
+    if (opened) {
+      const previous = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = previous; };
+    }
+  });
   onMount(() => {
-    const start = (event: TouchEvent) => { startX = event.changedTouches[0].clientX; startY = event.changedTouches[0].clientY; };
-    const end = (event: TouchEvent) => { const dx = event.changedTouches[0].clientX - startX; const dy = event.changedTouches[0].clientY - startY; if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1); };
-    region.addEventListener('keydown', keys);
-    region.addEventListener('touchstart', start, { passive: true });
-    region.addEventListener('touchend', end, { passive: true });
-    return () => { region.removeEventListener('keydown', keys); region.removeEventListener('touchstart', start); region.removeEventListener('touchend', end); };
+    let inView = false;
+    let previous = 0;
+    let frame = 0;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const observer = new IntersectionObserver(([entry]) => inView = entry.isIntersecting);
+    observer.observe(rail);
+    const resize = new ResizeObserver(() => {
+      period = group.getBoundingClientRect().width;
+      copies = period ? Math.max(2, Math.ceil(rail.clientWidth / period) + 1) : 2;
+      paint();
+    });
+    resize.observe(group); resize.observe(rail);
+    function animate(now: number) {
+      const elapsed = Math.min(now - (previous || now), 40);
+      previous = now;
+      if (inView && !document.hidden && !reduce.matches && !general && !hovered && !focused && !paused && !opened) {
+        offset += direction * elapsed * .035; paint();
+      }
+      frame = requestAnimationFrame(animate);
+    }
+    frame = requestAnimationFrame(animate);
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); resize.disconnect(); };
   });
 </script>
-<section class="events" aria-labelledby="events-heading" style={`--accent:${accent};--accent-ink:${selected ? categories[selected.category as keyof typeof categories].foreground : 'var(--ink)'}`} >
-  <div class="section-meta"><span>01 / Programação</span><span>Palmas, Tocantins</span></div>
-  <header><h2 id="events-heading">Na agenda<span>.</span></h2><p>{events.length} {events.length === 1 ? 'evento nesta seleção' : 'eventos nesta seleção'}</p></header>
-  <div bind:this={region} role="region" aria-roledescription="carrossel" aria-label="Eventos culturais">
-    {#if selected}
-      {#key selected.slug}
-        <article class="slide" aria-roledescription="slide" aria-label={`${index + 1} de ${events.length}`}>
-          <figure class="poster-wrap"><img class="poster" style:object-position={selected.imagePosition || '50% 50%'} src={`${base}/cartazes/${selected.slug}.jpg?v=${selected.posterRevision}`} alt={selected.imageAlt || `Cartaz de ${selected.title}`} width={selected.posterWidth} height={selected.posterHeight} loading="lazy" decoding="async" /><figcaption>{#if selected.example && selected.posterIsPhoto}<span>Foto ilustrativa</span>{/if}{#if selected.imageCredit}{#if selected.imageSource}<a href={selected.imageSource} rel="noopener noreferrer">{selected.imageCredit}</a>{:else}<span>{selected.imageCredit}</span>{/if}{/if}</figcaption></figure>
-          <div class="information">
-            <div class="date numerals"><time datetime={selected.date}>{displayDate(selected.date)}</time><span>{selected.time}</span></div>
-            <h3>{selected.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}</h3>
-            <span class="category">{selected.category}</span>
-            {#if selected.example}<p class="example">Exemplo fictício · não é um evento real</p>{/if}
-            <p class="venue">{venue?.nome || 'Online ou sem local fixo'}</p>
-            {#if venue}<p class="address">{venue.endereço}</p>{/if}
-            {#if selected.endDate}<p class="until">Até {displayDate(selected.endDate)}</p>{/if}
-            <p class="description">{selected.summary}</p>
-            <a class="event-link" href={`${base}/eventos/${selected.slug}/`}>Sobre o evento <Arrow direction="up-right" /></a>
-            {#if selected.link}<a class="organization" href={selected.link} rel="noopener noreferrer">Informações com a organização <Arrow direction="up-right" /></a>{/if}
-          </div>
-        </article>
-      {/key}
-      <div class="controls"><p class="numerals"><strong>{String(index + 1).padStart(2, '0')}</strong> / {String(events.length).padStart(2, '0')}<span>Sem pressa. Tem mais.</span></p><div><button aria-label="Evento anterior" onclick={() => step(-1)} disabled={events.length < 2}><Arrow direction="left" /></button><button aria-label="Próximo evento" onclick={() => step(1)} disabled={events.length < 2}><Arrow /></button></div></div>
-      <p class="sr-only" aria-live="polite" aria-atomic="true">Evento {index + 1} de {events.length}: {selected.title}</p>
-    {:else}<p class="empty">Nenhum evento nesta seleção por enquanto.</p>{/if}
+
+<section class="events" aria-labelledby="events-heading">
+  <header>
+    <h2 id="events-heading">{general ? 'PROGRAMAÇÃO GERAL' : 'DESTAQUE'}</h2>
+    <div class="controls">
+      <button class="mode" onclick={() => general = !general}>{general ? 'DESTAQUE' : 'PROGRAMAÇÃO GERAL'} <Arrow direction="up-right" /></button>
+      {#if !general}
+        <button aria-label="Mover para a esquerda" aria-pressed={direction === -1} onclick={() => steer(-1)}><Arrow direction="left" /></button>
+        <button aria-label={paused ? 'Retomar carrossel' : 'Pausar carrossel'} aria-pressed={paused} onclick={() => paused = !paused}><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">{#if paused}<path d="M4 2 14 8 4 14Z" fill="currentColor" />{:else}<path d="M5 2V14M11 2V14" stroke="currentColor" stroke-width="3" />{/if}</svg></button>
+        <button aria-label="Mover para a direita" aria-pressed={direction === 1} onclick={() => steer(1)}><Arrow /></button>
+      {/if}
+    </div>
+  </header>
+  <div bind:this={rail} class="rail" hidden={general} role="region" aria-roledescription="carrossel" aria-label="Eventos em destaque"
+    onpointerenter={() => hovered = true} onpointerleave={() => hovered = false}
+    onfocusin={(event) => {
+      focused = true;
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('.photo');
+      if (button?.matches(':focus-visible') && !button.dataset.copy) {
+        const index = Array.from(group.children).indexOf(button);
+        offset = index * (button.getBoundingClientRect().width + 18); paint(); rail.scrollLeft = 0;
+      }
+    }} onfocusout={(event) => focused = rail.contains(event.relatedTarget as Node)}
+    ontouchstart={(event) => { touchX = event.touches[0].clientX; dragged = false; hovered = true; }}
+    ontouchmove={(event) => { const x = event.touches[0].clientX; offset += touchX - x; dragged ||= Math.abs(touchX - x) > 3; touchX = x; paint(); }}
+    ontouchend={() => hovered = false}>
+    <div class="track" bind:this={track}>
+      <div class="group" bind:this={group}>
+        {#each events as event (event.slug)}
+          <button class="photo" class:chosen={opened?.slug === event.slug && origin?.dataset.slug === event.slug && !origin?.dataset.copy} data-slug={event.slug} aria-label={`Abrir ${event.title}`} onclick={(click) => { if (!dragged) open(event, click.currentTarget); }}>
+            <img src={`${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`} style:object-position={event.imagePosition || '50% 50%'} alt={event.imageAlt || `Cartaz de ${event.title}`} width="300" height="400" decoding="async" />
+            <span>{event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}{#if event.example}<small>Exemplo fictício</small>{/if}</span>
+          </button>
+        {/each}
+      </div>
+      {#each Array(copies - 1) as _, copy}
+        <div class="group duplicate" aria-hidden="true" >
+          {#each events as event (event.slug)}
+            <button class="photo" class:chosen={opened?.slug === event.slug && origin?.dataset.copy === String(copy)} data-copy={copy} data-slug={event.slug} tabindex="-1" aria-label={`Abrir ${event.title}`} onclick={(click) => { if (!dragged) open(event, click.currentTarget); }}>
+              <img src={`${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`} style:object-position={event.imagePosition || '50% 50%'} alt="" width="300" height="400" decoding="async" />
+              <span>{event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}{#if event.example}<small>Exemplo fictício</small>{/if}</span>
+            </button>
+          {/each}
+        </div>
+      {/each}
+    </div>
   </div>
+  {#if general}
+    <div class="program">
+      {#each allEvents as event (event.slug)}
+        <button class="program-event" onclick={(click) => open(event, click.currentTarget)}>
+          <img src={`${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`} style:object-position={event.imagePosition || '50% 50%'} alt={event.imageAlt || `Cartaz de ${event.title}`} width="90" height="120" loading="lazy" />
+          <span class="program-title">{event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}{#if event.example}<small>Exemplo fictício</small>{/if}</span>
+          <span class="program-date">{displayDate(event.date)} · {event.time}{#if (event.endDate || event.date) < localDate(new Date())}<small>Encerrado</small>{/if}</span>
+          <Arrow direction="up-right" />
+        </button>
+      {/each}
+    </div>
+  {:else if !events.length}<p class="empty">Nenhum evento nesta seleção.</p>{/if}
+  {#if selected && !opened}<p class="sr-only" aria-live="polite">{selected.title}</p>{/if}
 </section>
+
+<dialog bind:this={dialog} aria-labelledby="event-title" oncancel={(event) => { event.preventDefault(); close(); }} onclick={(event) => { if (event.target === dialog) close(false); }}>
+  {#if opened}
+    <article class="detail">
+      <button class="close" aria-label="Fechar informações do evento" onclick={(event) => close(event.detail === 0)}>Fechar ×</button>
+      <figure>
+        <img class="detail-photo" style:view-transition-name="event-photo" style:object-position={opened.imagePosition || '50% 50%'} src={`${base}/cartazes/${opened.slug}.jpg?v=${opened.posterRevision}`} alt={opened.imageAlt || `Cartaz de ${opened.title}`} width={opened.posterWidth} height={opened.posterHeight} />
+        <figcaption>{#if opened.example}Foto ilustrativa. {/if}{#if opened.imageSource}<a href={opened.imageSource} rel="noopener noreferrer">{opened.imageCredit}</a>{:else}{opened.imageCredit || ''}{/if}</figcaption>
+      </figure>
+      <div class="information">
+        <p class="date numerals">{displayDate(opened.date)} · {opened.time}{#if opened.endDate} — {displayDate(opened.endDate)}{/if}</p>
+        <h3 id="event-title">{opened.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}</h3>
+        <p class="category">{opened.category}</p>
+        {#if opened.example}<p class="example">Exemplo fictício · não é um evento real</p>{/if}
+        <p class="venue">{venue?.nome || 'Online ou sem local fixo'}</p>
+        {#if venue}<p>{venue.endereço}</p>{/if}
+        <div class="description">{@html opened.html}</div>
+        <a class="event-link" href={`${base}/eventos/${opened.slug}/`}>Página do evento <Arrow direction="up-right" /></a>
+        {#if opened.link}<a class="organization" href={opened.link} rel="noopener noreferrer">Informações com a organização <Arrow direction="up-right" /></a>{/if}
+      </div>
+    </article>
+  {/if}
+</dialog>
+
 <style>
-  .events { padding: 3.5rem var(--gutter) 4.5rem; }
-  header { display: flex; align-items: end; justify-content: space-between; padding: 2.3rem 0 3rem; }
-  header h2 span { color: var(--coral); }
-  header p { font-size: .85rem; }
-  .slide { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 7vw, 7rem); align-items: center; }
-  .poster-wrap { margin: 0; width: 100%; max-width: 450px; align-self: start; }
-  .poster { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: cover; animation: reveal .55s cubic-bezier(.2,.8,.3,1) both; }
-  figcaption { display: flex; justify-content: space-between; gap: 1rem; font-size: .6rem; padding-top: .6rem; line-height: 1.4; }
-  .information { padding: 1rem 0; animation: arrive .4s both; }
-  .date { display: flex; justify-content: space-between; gap: .5rem; font-size: .8rem; padding-bottom: .8rem; border-bottom: var(--line); }
-  h3 { font-size: clamp(2.7rem, 4.8vw, 5rem); margin: 1.3rem 0 .8rem; max-width: 12ch; font-stretch: 85%; overflow-wrap: anywhere; }
-  .category { display: inline-block; background: var(--accent); color: var(--accent-ink); border-bottom: 2px solid var(--ink); padding: .15rem .4rem; text-transform: uppercase; font-size: .65rem; letter-spacing: .12em; font-weight: 700; }
-  .example { font-size: .65rem; margin: .9rem 0; }
-  .venue { font-weight: 700; margin-top: 1.3rem; }
-  .address,.until { font-size: .8rem; margin-top: .25rem; }
-  .description { margin-top: 1.1rem; font-size: .9rem; max-width: 38ch; }
-  .event-link { margin-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; background: var(--ink); color: var(--paper); padding: .9rem 1.1rem; text-decoration: none; font-size: .85rem; font-weight: 700; max-width: 22rem; }
-  .event-link:hover { background: var(--coral); color: var(--ink); }
-  .organization { display: flex; align-items: center; gap: .5rem; font-size: .75rem; margin-top: .8rem; }
-  .controls { display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; border-top: var(--line); padding-top: 1rem; }
-  .controls p { font-size: .85rem; }
-  .controls strong { font-size: 1.4rem; font-weight: 500; }
-  .controls p span { margin-left: 2rem; font-size: .7rem; }
-  .controls > div { display: flex; gap: .6rem; }
-  button { border: var(--line); background: transparent; width: 3rem; height: 3rem; display: grid; place-items: center; font-size: 1.3rem; }
-  button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
-  .empty { padding: 6rem 0; font-size: 1.2rem; }
-  @keyframes reveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
-  @keyframes arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .events { padding: .6rem 0 1rem; }
+  header { padding: 0 var(--gutter) 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  h2 { font-size: clamp(1.6rem, 3vw, 3rem); letter-spacing: -.05em; }
+  .controls { display: flex; align-items: center; gap: .4rem; }
+  .controls button { min-width: 44px; min-height: 44px; border: 0; background: transparent; display: inline-flex; justify-content: center; align-items: center; gap: .7rem; }
+  .controls .mode { font-size: .7rem; font-weight: 700; margin-right: .8rem; }
+  .controls button:hover { background: var(--sun); }
+  .rail { overflow: hidden; touch-action: pan-y; padding-block: .4rem 1rem; }
+  .rail[hidden] { display: none; }
+  .track, .group { display: flex; width: max-content; }
+  .track { will-change: transform; }
+  .group { gap: 1rem; padding-right: 1rem; }
+  .photo { width: clamp(210px, 22vw, 340px); flex: 0 0 auto; background: transparent; border: 0; padding: 0; text-align: left; }
+  .photo img { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: cover; }
+  .photo span { display: block; margin-top: .55rem; font-size: .85rem; font-weight: 600; }
+  .chosen img { visibility: hidden; }
+  .empty { padding: 2rem var(--gutter); }
+  .program { padding: 0 var(--gutter); }
+  .program-event { display: flex; width: 100%; align-items: center; gap: 1.5rem; padding: .8rem 0; border: 0; border-bottom: 1px solid #25203530; background: transparent; text-align: left; }
+  .program-event:hover { background: var(--sun); }
+  .program-event img { width: 72px; height: 96px; object-fit: cover; }
+  .program-title { flex: 1; font: 750 clamp(1.2rem, 2.5vw, 2.2rem)/1 var(--display); letter-spacing: -.035em; }
+  small { display: block; font: 400 .65rem/1.4 var(--body); letter-spacing: 0; margin-top: .5rem; }
+  .program-date { font-size: .8rem; }
+  dialog { width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; padding: 0; color: var(--ink); background: #25203590; }
+  dialog::backdrop { background: transparent; }
+  .detail { position: relative; margin: 5svh auto; width: min(90%, 1180px); max-height: 90svh; overflow-y: auto; background: var(--paper); display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); gap: clamp(1.5rem, 5vw, 5rem); padding: 3rem; }
+  .close { position: absolute; right: 1rem; top: .65rem; border: 0; background: transparent; padding: .5rem; font-size: .75rem; }
+  figure { margin: 0; }
+  .detail-photo { width: 100%; height: auto; max-height: 65svh; object-fit: contain; }
+  figcaption { font-size: .6rem; margin-top: .6rem; }
+  .date { font-size: .8rem; margin-bottom: 1rem; }
+  h3 { font-size: clamp(2.6rem, 5vw, 4.5rem); }
+  .category { margin-top: 1rem; font-size: .75rem; }
+  .example { font-size: .65rem; margin-top: .6rem; }
+  .venue { font-weight: 700; margin-top: 1.5rem; }
+  .description { font-size: .9rem; margin-top: 1rem; line-height: 1.5; }
+  .event-link, .organization { display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; font-size: .8rem; }
   @media (max-width: 700px) {
-    .events { padding-top: 2rem; padding-bottom: 3rem; }
-    header { padding: 1.7rem 0 2rem; align-items: center; }
-    header p { display: none; }
-    header h2 { font-size: clamp(3rem, 13vw, 5rem); white-space: nowrap; }
-    .slide { grid-template-columns: 1fr; gap: 1rem; }
-    .poster-wrap { max-width: none; }
-    h3 { font-size: clamp(3rem, 12vw, 4.5rem); max-width: 14ch; }
-    .information { padding-top: .5rem; }
-    .controls p span { display: none; }
+    header { flex-wrap: wrap; gap: .5rem; padding-bottom: .6rem; }
+    .controls { width: 100%; justify-content: flex-end; }
+    .controls .mode { margin-right: auto; padding-left: 0; }
+    .photo { width: 62vw; }
+    .program-event { gap: .7rem; flex-wrap: wrap; }
+    .program-event img { width: 54px; height: 72px; }
+    .program-title { flex-basis: calc(100% - 80px); }
+    .program-date { margin-left: calc(54px + .7rem); flex: 1; font-size: .7rem; }
+    .detail { margin: 1rem auto; padding: 2.8rem 1rem 1.5rem; width: calc(100% - 2rem); max-height: calc(100dvh - 2rem); grid-template-columns: 1fr; gap: 1.2rem; }
+    .detail figure { width: 52%; }
+    .detail-photo { max-height: 32svh; object-position: left; }
+    h3 { font-size: 2.5rem; }
   }
 </style>

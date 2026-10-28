@@ -11,6 +11,7 @@
   let today = $state('');
   let selectedSlug = $state('');
   let category = $state('');
+  let request = $state<{ slug: string }>();
   const visible = $derived(today ? data.events.filter((event) => (event.endDate || event.date) >= today) : []);
   const filtered = $derived(category ? visible.filter((event) => event.category === category) : visible);
   const selected = $derived(filtered.find((event) => event.slug === selectedSlug) || filtered[0]);
@@ -20,7 +21,7 @@
     const readHash = () => {
       const slug = location.hash.slice(1);
       if (data.events.some((event) => event.slug === slug)) {
-        category = ''; selectedSlug = slug;
+        category = ''; selectedSlug = slug; request = { slug };
         requestAnimationFrame(() => document.getElementById('eventos')?.scrollIntoView({ behavior: 'instant' }));
       }
     };
@@ -36,11 +37,10 @@
 <main id="conteudo">
   <Hero events={visible} />
   <div class="event-anchors" aria-hidden="true">{#each data.events as event (event.slug)}<span id={event.slug}></span>{/each}</div>
-  <div id="eventos">{#if today}<Carousel events={filtered} venues={data.venues} {selected} onselect={select} />{:else}<div class="loading" aria-live="polite">Conferindo a programação de hoje…</div>{/if}</div>
-  <CityMap events={filtered} allEvents={visible} venues={data.venues} {selected} {category} oncategory={(value) => category = value} onselect={select} />
+  <div id="eventos">{#if today}<Carousel events={filtered} allEvents={data.events} venues={data.venues} {selected} {request} onselect={select} />{:else}<div class="loading" aria-live="polite">Conferindo a programação de hoje…</div>{/if}</div>
+  <CityMap events={filtered} allEvents={visible} venues={data.venues} {selected} {category} oncategory={(value) => category = value} onselect={(slug) => { select(slug); request = { slug }; }} />
   <noscript>Ative o JavaScript para consultar a programação atualizada.</noscript>
   <section id="sobre" class="about" aria-labelledby="about-heading">
-    <div class="section-meta"><span>03 / Sobre o Culturando</span><span>Daqui. Para quem está aqui.</span></div>
     <div class="about-copy"><h2 id="about-heading">Cultura<br />em Palmas<span>.</span></h2><div><p>A programação cultural da cidade, em um lugar.</p><p>Consulte datas, horários e informações de cada evento. Use as categorias para escolher a programação ou veja no mapa os eventos com endereço cadastrado.</p><a href="#eventos">Voltar à programação ↑</a></div></div>
   </section>
   <footer><a href="#inicio" class="footer-mark">CULTURANDO</a><div><span>Seu mapa cultural.</span><span>Palmas, Tocantins / Brasil</span></div><a href="#inicio">De volta ao começo ↑</a></footer>
@@ -49,9 +49,9 @@
   .event-anchors { position: relative; }
   .event-anchors span { position: absolute; top: 0; pointer-events: none; }
   .loading { padding: 5rem var(--gutter); }
-  .about { padding: 4rem var(--gutter) 5rem; background: var(--sun); }
-  .about-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; padding-top: 3rem; align-items: end; }
-  .about h2 { font-size: clamp(4rem, 8vw, 8.5rem); }
+  .about { padding: 1.5rem var(--gutter) 2rem; background: var(--sun); }
+  .about-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; padding-top: 0; align-items: end; }
+  .about h2 { font-size: clamp(2.5rem, 4vw, 4rem); }
   .about h2 span { color: var(--ink); }
   .about-copy > div { max-width: 29rem; }
   .about p:first-child { font-family: var(--display); font-size: clamp(1.5rem, 2.4vw, 2.6rem); font-weight: 700; line-height: 1.05; letter-spacing: -.04em; margin-bottom: 1.5rem; }
@@ -61,5 +61,5 @@
   .footer-mark { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(3rem, 13.5vw, 14rem); line-height: 1; letter-spacing: -.075em; text-decoration: none; }
   footer > div { display: flex; justify-content: space-between; gap: 1rem; border-top: var(--line); padding-top: 1rem; font-size: .7rem; }
   footer > a:last-child { display: block; margin-top: 2rem; text-align: right; font-size: .65rem; }
-  @media (max-width: 700px) { .about { padding-top: 2rem; padding-bottom: 3rem; } .about-copy { grid-template-columns: 1fr; gap: 2rem; padding-top: 2rem; } .section-meta { font-size: .55rem; } .footer-mark { font-size: 11.8vw; } }
+  @media (max-width: 700px) { .about { padding-top: 2rem; padding-bottom: 3rem; } .about-copy { grid-template-columns: 1fr; gap: 2rem; padding-top: 2rem; } .footer-mark { font-size: 11.8vw; } }
 </style>

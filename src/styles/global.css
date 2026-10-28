@@ -35,7 +35,6 @@ button { border-radius: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .skip-link { position: fixed; z-index: 100; top: .75rem; left: .75rem; padding: .8rem; background: var(--sun); transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); }
-.section-meta { display: flex; justify-content: space-between; gap: 1rem; font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; border-top: var(--line); padding-top: .8rem; }
 .numerals { font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) {
   :root { scroll-behavior: auto; }

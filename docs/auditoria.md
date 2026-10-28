@@ -124,3 +124,13 @@ As fotos aparecem em cores naturais, sem molduras de cartaz no carrossel. A agen
 Verificações: `npm run check` (zero erros/avisos), `npm run audit`, `npm test` (9 aprovados) e `npm run build` passaram. Playwright/Chromium em 1440×900 e 390×844 percorreu as seis fotos e confirmou proporção 3:4, ausência de filtro na fotografia, créditos, texto alternativo, URL com revisão e proporção original no detalhe. Axe WCAG A/AA e 2.1 AA não apontou ocorrências nas páginas iniciais verificadas.
 
 Capturas: [desktop](evidence/fotos-1440.png), [celular](evidence/fotos-390.png). [Resultado Axe](evidence/fotos-axe.json). Google e Wikimedia estavam bloqueados pela política de rede; os arquivos vieram dos repositórios oficiais indicados na documentação de fontes, sem incorporar o layout ou o código dos temas de origem.
+
+## Revisão de destaque contínuo — 28/10/2026
+
+Solicitação: retirar slogans, faixas divisórias e títulos enviados nas capturas, aproximar o conteúdo e substituir o slide único por fotos em loop. O topo mantém somente Culturando; DESTAQUE abre fotos 3:4 em movimento, com pausa no hover/foco, controles de direção e pausa manual. Selecionar leva a foto para a lateral dos detalhes via View Transitions quando disponível; clicar fora ou fechar devolve a imagem. Escape restaura o foco. Nenhuma dependência adicionada.
+
+PROGRAMAÇÃO GERAL alterna para uma lista de todos os eventos publicados, inclusive os encerrados identificados. Não há novo campo ou processo de cadastro. O destaque continua ocultando os passados no fuso de Palmas.
+
+`npm run check`: 0 erros e 0 avisos. `npm run audit`: aprovado. `npm test`: 9 testes aprovados. `npm run build`: site estático gerado, com o aviso já conhecido do tamanho do MapLibre carregado sob demanda.
+
+Chromium em 1440×900 e 390×844: movimento automático, pausa no hover, duas direções, pausa manual, abertura de detalhes, clique externo com retomada, lista dos seis eventos, Escape/foco e movimento reduzido aprovados. Axe WCAG A/AA: zero ocorrências nas telas principal e de detalhe. Sem rolagem horizontal. Evidências: `docs/evidence/destaque-*.png` e `destaque-verificacao.json`. Tiles bloqueados neste ambiente, portanto a geografia real do mapa não foi revalidada; captura mostra a contingência de carregamento. Publicação verificada separadamente pelo workflow do Pages.

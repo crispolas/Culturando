@@ -151,8 +151,7 @@
   }
 </script>
 <section id="mapa" class="map-section" aria-labelledby="map-heading">
-  <div class="section-meta"><span>02 / Território cultural</span><span>Palmas, TO · 10°11′S 48°20′O</span></div>
-  <header><h2 id="map-heading">A cidade<br />é o caminho<span>.</span></h2><p>Do seu lado da cidade.<br />Ou do outro. Vamos?</p></header>
+  <header><h2 id="map-heading">Mapa</h2></header>
   <div class="filters" aria-label="Filtrar eventos por categoria">
     <button class:active={category === ''} aria-pressed={category === ''} onclick={() => oncategory('')}>Tudo <span>{allEvents.length}</span></button>
     {#each Object.entries(categories) as [name, palette]}
@@ -177,10 +176,9 @@
   <div class="map-note"><p>{located.features.length} evento(s) com local nesta seleção. Sem endereço fixo? O evento continua na agenda.</p><span>Dados &#169; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · <a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">OpenMapTiles</a></span></div>
 </section>
 <style>
-  .map-section { padding: 3.5rem var(--gutter) 4rem; }
-  header { display: flex; justify-content: space-between; align-items: end; padding: 2.5rem 0; }
-  header h2 { font-size: clamp(3.8rem, 7.5vw, 7.5rem); }
-  header p { font-size: .8rem; margin-bottom: .4rem; }
+  .map-section { padding: 1.5rem var(--gutter) 2rem; }
+  header { display: flex; justify-content: space-between; align-items: end; padding: .5rem 0 1rem; }
+  header h2 { font-size: clamp(2rem, 3vw, 3rem); }
   .filters { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; margin: .5rem 0 1.5rem; align-items: center; }
   .filters button { --tag: var(--mint); --tag-ink: var(--ink); --tag-border: var(--ink); border: 0; border-bottom: 2px solid transparent; padding: .25rem .1rem; background: transparent; font-family: var(--display); letter-spacing: -.04em; font-size: clamp(1rem, 1.65vw, 1.6rem); font-weight: 750; }
   .filters button:hover { border-color: var(--ink); }
@@ -220,10 +218,8 @@
   .map-section :global(:focus-visible) { outline: 3px solid var(--ink); outline-offset: 4px; box-shadow: 0 0 0 6px var(--paper); }
   @media (max-width: 700px) {
     .map-section { padding-top: 2rem; padding-bottom: 2.5rem; }
-    header { padding: 2rem 0; }
-    header p { display: none; }
-    header h2 { font-size: clamp(3.3rem, 13vw, 5rem); }
-    .section-meta { font-size: .5rem; }
+    header { padding: 0 0 1rem; }
+    header h2 { font-size: 2rem; }
     .filters { gap: .6rem 1rem; margin-bottom: 1.2rem; }
     .filters button { font-size: 1.15rem; min-height: 40px; }
     .map-frame { height: 75svh; min-height: 550px; margin-inline: calc(-1 * var(--gutter)); border-inline: 0; }

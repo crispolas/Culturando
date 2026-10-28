@@ -1,0 +1,34 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "auto": true,
+    "hover": true,
+    "directions": true,
+    "manualPause": true,
+    "outsideResumes": true,
+    "programCount": 6,
+    "escapeFocus": true,
+    "reducedMotion": true,
+    "axeViolations": 0,
+    "overflow": false
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "auto": true,
+    "hover": true,
+    "directions": true,
+    "manualPause": true,
+    "outsideResumes": true,
+    "programCount": 6,
+    "escapeFocus": true,
+    "reducedMotion": true,
+    "axeViolations": 0,
+    "overflow": false
+  }
+]
