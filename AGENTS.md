@@ -26,3 +26,6 @@ Não use: export let, $:, on:click, createEventDispatcher, <slot>, stores quando
 ## Verificação e relato
 Se não for possível abrir o site em navegador (1440×900 e 390×844), diga explicitamente que não houve verificação visual. Nunca declare "testado" sem o comando e o resultado.
 Ao errar duas vezes no mesmo ponto, proponha uma regra para este arquivo.
+
+## Âncoras e pré-renderização
+Toda âncora interna deve ter um destino presente no HTML pré-renderizado de cada rota que a contém, inclusive o link de pular navegação. Verifique todas as rotas antes de iniciar o preview.

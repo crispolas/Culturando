@@ -1,0 +1,21 @@
+
+> semnome@0.1.0 test
+> node --test --test-isolation=none scripts/content.test.mjs scripts/audit.test.mjs scripts/map.test.mjs
+
+✔ auditoria rejeita todas as famílias proibidas e identifica linha e arquivo (19.878362ms)
+✔ calendário rejeita dias inexistentes e hora fora da faixa (3.658746ms)
+✔ eventos sem local ou online são aceitos, sem inventar coordenadas (15.705133ms)
+✔ erros indicam arquivo e campo em português (4.2741ms)
+✔ local único é reutilizável e slugs duplicados são rejeitados (5.263887ms)
+✔ cartaz ausente e YAML inválido falham (6.022577ms)
+✔ agenda expira na meia-noite de Palmas, inclusive eventos de vários dias (0.269986ms)
+✔ mapa inclui só eventos com local cadastrado e preserva longitude/latitude (0.24617ms)
+✔ texto de todas as categorias tem contraste AA de pelo menos 4,5:1 (0.337186ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 222.520176

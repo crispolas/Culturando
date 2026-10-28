@@ -1,0 +1,141 @@
+{
+  "metrics": {
+    "cls": 0,
+    "lcp": 272
+  },
+  "resources": [
+    {
+      "name": "/_app/immutable/entry/start.CTQsHMex.js",
+      "bytes": 418,
+      "encoded": 118
+    },
+    {
+      "name": "/_app/immutable/chunks/BiABgFKE.js",
+      "bytes": 11350,
+      "encoded": 11050
+    },
+    {
+      "name": "/_app/immutable/chunks/DMTDp21R.js",
+      "bytes": 10148,
+      "encoded": 9848
+    },
+    {
+      "name": "/_app/immutable/entry/app.CvflmDLT.js",
+      "bytes": 2474,
+      "encoded": 2174
+    },
+    {
+      "name": "/_app/immutable/chunks/BUBAA7RP.js",
+      "bytes": 1233,
+      "encoded": 933
+    },
+    {
+      "name": "/_app/immutable/chunks/CCZ0uDIH.js",
+      "bytes": 3126,
+      "encoded": 2826
+    },
+    {
+      "name": "/_app/immutable/chunks/D6ZXD1dx.js",
+      "bytes": 3443,
+      "encoded": 3143
+    },
+    {
+      "name": "/_app/immutable/chunks/BycjCsup.js",
+      "bytes": 961,
+      "encoded": 661
+    },
+    {
+      "name": "/_app/immutable/chunks/C3bp8nzV.js",
+      "bytes": 1084,
+      "encoded": 784
+    },
+    {
+      "name": "/_app/immutable/chunks/4E7rzi6a.js",
+      "bytes": 1063,
+      "encoded": 763
+    },
+    {
+      "name": "/_app/immutable/nodes/0.D9J656py.js",
+      "bytes": 1232,
+      "encoded": 932
+    },
+    {
+      "name": "/_app/immutable/chunks/Et0jZgED.js",
+      "bytes": 1032,
+      "encoded": 732
+    },
+    {
+      "name": "/_app/immutable/nodes/2.BeE_G_RC.js",
+      "bytes": 11821,
+      "encoded": 11521
+    },
+    {
+      "name": "/_app/immutable/chunks/BPjjTVik.js",
+      "bytes": 1365,
+      "encoded": 1065
+    },
+    {
+      "name": "/_app/immutable/assets/atkinson-hyperlegible-next-latin-wght-normal.BcXVPD7q.woff2",
+      "bytes": 34296,
+      "encoded": 33996
+    },
+    {
+      "name": "/_app/immutable/assets/archivo-latin-standard-normal.DY7AcnAa.woff2",
+      "bytes": 90404,
+      "encoded": 90104
+    },
+    {
+      "name": "/_app/immutable/assets/0.DE8tsD4a.css",
+      "bytes": 1597,
+      "encoded": 1297
+    },
+    {
+      "name": "/_app/immutable/assets/2.CNV2GV4T.css",
+      "bytes": 4239,
+      "encoded": 3939
+    },
+    {
+      "name": "/_app/immutable/nodes/1.BcN0yspA.js",
+      "bytes": 765,
+      "encoded": 465
+    },
+    {
+      "name": "/cartazes/exemplo-ficticio-danca-de-papel.jpg",
+      "bytes": 57844,
+      "encoded": 57544
+    },
+    {
+      "name": "/cartazes/exemplo-ficticio-som-de-rascunho.jpg",
+      "bytes": 60105,
+      "encoded": 59805
+    },
+    {
+      "name": "/cartazes/exemplo-ficticio-palco-imaginario.jpg",
+      "bytes": 60115,
+      "encoded": 59815
+    },
+    {
+      "name": "/cartazes/exemplo-ficticio-galeria-inventada.jpg",
+      "bytes": 63593,
+      "encoded": 63293
+    },
+    {
+      "name": "/cartazes/exemplo-ficticio-festival-de-teste.jpg",
+      "bytes": 59130,
+      "encoded": 58830
+    },
+    {
+      "name": "/cartazes/exemplo-ficticio-oficina-imaginaria.jpg",
+      "bytes": 65795,
+      "encoded": 65495
+    },
+    {
+      "name": "/favicon.svg",
+      "bytes": 513,
+      "encoded": 213
+    }
+  ],
+  "navigation": 117.69999999552965,
+  "totalBytes": 549146,
+  "mapDeferred": true
+}

@@ -1,0 +1,20 @@
+import { readContent } from './read.mjs';
+import MarkdownIt from 'markdown-it';
+import sharp from 'sharp';
+
+const markdown = new MarkdownIt({ html: false, linkify: false });
+const content = await readContent();
+export const venues = content.venues;
+export const events = await Promise.all(content.events.map(async ({ posterPath, ...event }) => {
+  let dimensions;
+  try { dimensions = await sharp(posterPath).metadata(); }
+  catch (cause) { throw new Error(`events/${event.slug}/index.md: campo 'cartaz' não contém uma imagem válida`, { cause }); }
+  const posterWidth = Math.min(dimensions.width || 1000, 1000);
+  const posterHeight = Math.round(posterWidth * (dimensions.height || 1250) / (dimensions.width || 1000));
+  return {
+    ...event, posterWidth, posterHeight, posterIsPhoto: !posterPath.endsWith('.svg'),
+    html: markdown.render(event.description),
+    summary: event.description.replace(/[#*_`\[\]]/g, '').replace(/\s+/g, ' ').slice(0, 180)
+  };
+}));
+export const posterPaths = new Map(content.events.map((event) => [event.slug, event.posterPath]));
