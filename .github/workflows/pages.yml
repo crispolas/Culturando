@@ -40,12 +40,27 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Usar o build do aplicativo como origem do Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method PUT "repos/$GITHUB_REPOSITORY/pages" -f build_type=workflow
+          gh api "repos/$GITHUB_REPOSITORY/pages" --jq '{build_type, html_url}'
       - name: Publicar
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verificar o site publicado
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: node scripts/verify-pages.mjs
