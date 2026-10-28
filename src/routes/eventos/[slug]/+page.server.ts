@@ -12,6 +12,6 @@ export const load: PageServerLoad = ({ params }) => {
   return {
     event, venue: venues.find((item) => item.slug === event.venue) || null,
     canonical: `${origin}${base}/eventos/${event.slug}/`,
-    image: `${origin}${base}/cartazes/${event.slug}.jpg`
+    image: `${origin}${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`
   };
 };

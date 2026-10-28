@@ -22,7 +22,7 @@
   }
 </script>
 <section id="inicio" class="hero" bind:this={wall} onpointermove={move} onpointerleave={() => { x = 0; y = 0; }} aria-labelledby="wordmark" style={`--x:${x}px;--y:${y}px`}>
-  <div class="masthead"><span>Palmas, Tocantins</span><span>Cultura fora da moldura.</span></div>
+  <div class="masthead"><span>Palmas, Tocantins</span><span>Agenda cultural independente.</span></div>
   <h1 id="wordmark"><span class="sr-only">Culturando — Seu mapa cultural</span>
     <svg class="wordmark" viewBox="0 0 1400 270" aria-hidden="true">
       <defs>
@@ -32,21 +32,21 @@
       <g mask="url(#letter-windows)">
         <rect width="1400" height="270" fill="var(--ink)" />
         {#each fragments.slice(0, 3) as event, index (event.slug)}
-          <image class="window-image" href={`${base}/cartazes/${event.slug}.jpg`} width="1400" height="1250" y="-380" preserveAspectRatio="xMidYMid slice" filter="url(#duotone)" style={`--delay:${index * -6}s;animation-play-state:${paused ? 'paused' : 'running'}`} />
+          <image class="window-image" href={`${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`} width="1400" height="1250" y="-380" preserveAspectRatio="xMidYMid slice" filter="url(#duotone)" style={`--delay:${index * -6}s;animation-play-state:${paused ? 'paused' : 'running'}`} />
         {/each}
       </g>
     </svg>
   </h1>
   <div class="wall" aria-hidden="true" class:paused>
     {#each fragments as event, index (event.slug)}
-      <div class={`fragment fragment-${index}`} style={`--depth:${(index % 3 + 1) / 3};--rotation:${[-9, 7, -5, 10, -8, 5][index]}deg;--delay:${index * -1.7}s`}>
-        <div class="paper"><img src={`${base}/cartazes/${event.slug}.jpg`} alt="" width="200" height="250" /><span>{event.category} / Palmas</span></div>
+      <div class={`fragment fragment-${index}`} style={`--depth:${(index % 3 + 1) / 3};--rotation:${[-4, 3, -2, 4, -3, 2][index]}deg;--delay:${index * -1.7}s`}>
+        <div class="paper"><img style:object-position={event.imagePosition || '50% 50%'} src={`${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`} alt="" width="200" height="267" /></div>
       </div>
     {/each}
   </div>
   <div class="hero-bottom">
     <p class="strap">Seu mapa cultural<span><Arrow direction="up-right" /></span></p>
-    <div class="intro"><p>Tem arte acontecendo.<br />A cidade é o ponto de encontro.</p><a href="#eventos">Ver a programação <span aria-hidden="true">↓</span></a></div>
+    <div class="intro"><p>Música, teatro, dança<br />e exposições em Palmas.</p><a href="#eventos">Ver a programação <span aria-hidden="true">↓</span></a></div>
   </div>
   <div class="footnote"><span>Uma agenda feita de gente e lugar.</span><span>Role. A cidade continua. ↓</span></div>
 </section>
@@ -60,9 +60,9 @@
   @keyframes images { 0%, 28% { opacity: .88; } 34%, 94% { opacity: 0; } }
   .wall { position: absolute; top: 40%; left: 0; width: 100%; height: 40%; pointer-events: none; }
   .fragment { position: absolute; width: clamp(110px, 13.5vw, 210px); transform: translate3d(calc(var(--x) * var(--depth)), calc(var(--y) * var(--depth)), 0) rotate(var(--rotation)); transition: transform .7s cubic-bezier(.2,.7,.3,1); }
-  .paper { padding: .45rem; background: var(--paper); border: 1px solid var(--ink); box-shadow: 5px 6px 0 #25203528; }
-  .paper img { width: 100%; height: auto; aspect-ratio: 4/5; object-fit: cover; filter: url(#duotone); }
-  .paper span { display: block; font-size: .46rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-top: .35rem; }
+  .paper { background: var(--paper); }
+  .paper img { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: cover; }
+
   .fragment-0 { left: -2%; top: 12%; }
   .fragment-1 { left: 15%; top: -5%; }
   .fragment-2 { left: 34%; top: 25%; z-index: 2; }

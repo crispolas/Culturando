@@ -37,7 +37,7 @@
   <article>
     <header><div class="section-meta"><span>Palmas, Tocantins / {data.event.category}</span><span>Culturando / Programação cultural</span></div><h1>{data.event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}</h1></header>
     <div class="event-grid">
-      <div class="detail-poster"><img class:duotone={data.event.posterIsPhoto} src={`${base}/cartazes/${data.event.slug}.jpg`} alt={`Cartaz de ${data.event.title}`} width={data.event.posterWidth} height={data.event.posterHeight} /></div>
+      <figure class="detail-poster"><img src={`${base}/cartazes/${data.event.slug}.jpg?v=${data.event.posterRevision}`} alt={data.event.imageAlt || `Cartaz de ${data.event.title}`} width={data.event.posterWidth} height={data.event.posterHeight} /><figcaption>{#if data.event.example && data.event.posterIsPhoto}<span>Foto ilustrativa</span>{/if}{#if data.event.imageCredit}{#if data.event.imageSource}<a href={data.event.imageSource} rel="noopener noreferrer">{data.event.imageCredit}</a>{:else}<span>{data.event.imageCredit}</span>{/if}{/if}</figcaption></figure>
       <div class="body-copy">
         {#if data.event.example}<p class="notice">Exemplo fictício — não é um evento real.</p>{/if}
         {#if past}<p class="notice" role="status">Este evento já terminou e saiu da programação.</p>{/if}
@@ -57,8 +57,9 @@
   .brand { font-family: var(--display); font-weight: 900; letter-spacing: -.06em; font-size: 1.6rem; text-decoration: none; }
   h1 { font-size: clamp(3.5rem, 9vw, 9rem); max-width: 13ch; margin: 2rem 0 3rem; overflow-wrap: anywhere; font-stretch: 85%; }
   .event-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 7vw; align-items: start; }
-  .detail-poster { padding: 1.5rem; background: var(--mint); }
-  .detail-poster img { width: 100%; height: auto; box-shadow: 5px 6px 0 #25203540; }
+  .detail-poster { margin: 0; }
+  figcaption { display: flex; justify-content: space-between; gap: 1rem; padding-top: .7rem; font-size: .65rem; line-height: 1.4; }
+  .detail-poster img { width: 100%; height: auto; }
   .body-copy { padding-bottom: 3rem; max-width: 35rem; }
   .notice { background: var(--sun); border: var(--line); padding: .75rem; font-size: .75rem; margin-bottom: 1rem; }
   dl { margin: 0 0 2rem; }

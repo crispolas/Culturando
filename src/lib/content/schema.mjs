@@ -22,6 +22,10 @@ export const eventSchema = z.object({
   endDate: dateSchema.optional(),
   venue: slugSchema.or(z.literal('')).nullable().optional(),
   link: z.url({ error: 'deve ser uma URL completa com http ou https' }).refine((value) => /^https?:\/\//.test(value), 'deve usar http ou https').optional(),
+  imageAlt: requiredText.optional(),
+  imagePosition: z.string().regex(/^(?:100|[1-9]?\d)% (?:100|[1-9]?\d)%$/, 'deve conter duas porcentagens entre 0% e 100%, como 50% 50%').optional(),
+  imageCredit: requiredText.optional(),
+  imageSource: z.url({ error: 'deve ser uma URL completa com http ou https' }).refine((value) => /^https?:\/\//.test(value), 'deve usar http ou https').optional(),
   example: z.boolean({ error: 'deve ser true ou false' }).optional(),
   description: requiredText
 }).strict().refine((event) => !event.endDate || event.endDate >= event.date, {

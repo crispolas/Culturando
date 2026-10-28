@@ -16,7 +16,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; }
 body::after {
-  content: ''; position: fixed; inset: 0; z-index: 30; pointer-events: none; opacity: .055;
+  content: ''; position: fixed; inset: 0; z-index: 30; pointer-events: none; opacity: .025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23252035' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
 }
 h1,h2,h3,p { margin: 0; }
@@ -43,4 +43,3 @@ button { border-radius: 0; }
 }
 
 .color-definitions { position: absolute; overflow: hidden; pointer-events: none; }
-.duotone { filter: url(#duotone); }

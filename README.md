@@ -1,6 +1,6 @@
 # Culturando
 
-Agenda cultural de Palmas (TO). Conteúdo em Markdown e JSON, sem banco de dados, login ou painel obrigatório. SvelteKit 2, Svelte 5 com runes, TypeScript estrito e geração estática. A interface usa a direção “parede de cartazes”: tipografia variável, papel com grão, duotone, carrossel e mapa sincronizados. Sem fotos autorizadas, os seis exemplos usam cartazes “FOTO PENDENTE”.
+Agenda cultural de Palmas (TO). Conteúdo em Markdown e JSON, sem banco de dados, login ou painel obrigatório. SvelteKit 2, Svelte 5 com runes, TypeScript estrito e geração estática. A interface usa a direção “parede de cartazes”: tipografia variável, papel com grão, duotone, carrossel e mapa sincronizados. Os seis exemplos usam fotografias reais de domínio público, identificadas como ilustrativas; suas fontes estão em `docs/image-sources.md`.
 
 ## Como publicar um evento
 1. No GitHub, abra `content/events/` e use **Add file → Create new file** com o caminho `<slug>/index.md`, ou abra um evento e clique no lápis para editar.
@@ -25,7 +25,7 @@ venue: ""
 Descrição em Markdown. Informe aqui se a atividade é online ou itinerante.
 ```
 
-Categorias: `dança`, `música`, `teatro`, `exposição`, `festival`, `oficina`, `outros`. Datas precisam existir no calendário; hora em `HH:MM`, no fuso `America/Araguaina`. `endDate` e `link` são opcionais: omita-os se não houver valor. `description` é o corpo Markdown, não um campo no YAML. HTML embutido é desativado. O cartaz é identificado pelo nome, sem cadastro extra no frontmatter.
+Categorias: `dança`, `música`, `teatro`, `exposição`, `festival`, `oficina`, `outros`. Datas precisam existir no calendário; hora em `HH:MM`, no fuso `America/Araguaina`. `endDate` e `link` são opcionais: omita-os se não houver valor. `description` é o corpo Markdown, não um campo no YAML. HTML embutido é desativado. A imagem é identificada pelo nome `cartaz`, sem cadastro extra obrigatório no frontmatter. Para fotografias, os campos opcionais `imageAlt` (descrição da imagem), `imageCredit` (crédito/licença), `imageSource` (link de origem) e `imagePosition` (enquadramento, como `30% 50%`) documentam e ajustam a foto. A agenda recorta em 3:4; a página do evento preserva a imagem inteira.
 
 `content/venues.json` é uma lista; cada local tem `slug`, `nome`, `endereço`, `lat` e `lng`. Coordenadas são números decimais (latitude entre -90 e 90, longitude entre -180 e 180). Não há locais reais pré-cadastrados: confirme endereço e coordenadas antes de cadastrar. Eventos com `venue` vazio, nulo ou omitido não têm marcador. O formato de pastas/frontmatter é compatível com configuração futura de CMS baseado em Git.
 
@@ -64,7 +64,7 @@ Em outra hospedagem estática, use `npm ci && npm run check && npm run audit && 
 
 ## Exemplos — remover antes do lançamento
 
-Todos usam `example: true`, datas demonstrativas em 2099 e cartazes tipográficos próprios; nenhum anuncia uma atividade real. Apague estas seis pastas inteiras antes do lançamento:
+Todos usam `example: true`, datas demonstrativas em 2099 e fotografias ilustrativas CC0; nenhum anuncia uma atividade real. Apague estas seis pastas inteiras antes do lançamento:
 
 - `content/events/exemplo-ficticio-danca-de-papel/` — Exemplo fictício — Dança de Papel.
 - `content/events/exemplo-ficticio-som-de-rascunho/` — Exemplo fictício — Som de Rascunho.
@@ -101,6 +101,6 @@ A agenda aceita navegação por botões, setas do teclado e gesto horizontal; a 
 
 O mapa usa tiles vetoriais OpenFreeMap (`https://tiles.openfreemap.org/planet`) com dados OpenStreetMap/OpenMapTiles, sem chave. O serviço público é gratuito conforme a [documentação oficial](https://github.com/hyperknot/openfreemap). A atribuição está visível e vinculada no mapa. Só esse domínio externo é solicitado para o mapa: não usamos geocodificação, rastreamento, fontes remotas ou imagens por hotlink. Em ambientes com rede restrita, permita `tiles.openfreemap.org`; se a rede ou WebGL falhar, a agenda continua operante e o mapa oferece nova tentativa.
 
-O mapa, seu CSS e seu worker só são carregados quando a seção se aproxima da tela. O hero pausa fora da tela; movimentos respeitam `prefers-reduced-motion`. Não há fotos reais nem locais reais de demonstração: substitua os cartazes e remova os seis eventos antes de publicar. Os avisos de exemplo também aparecem na interface.
+O mapa, seu CSS e seu worker só são carregados quando a seção se aproxima da tela. O hero pausa fora da tela; movimentos respeitam `prefers-reduced-motion`. As fotos reais são ilustrativas e não representam eventos ou locais de Palmas: substitua as fotos de demonstração pelas imagens dos eventos e remova os seis exemplos antes do lançamento. Os avisos de exemplo também aparecem na interface.
 
 Licenças das fontes e do MapLibre são distribuídas em `static/licenses/`. Consulte [a auditoria final e suas capturas](docs/auditoria.md) para resultados, limitações e pendências de rede/publicação.

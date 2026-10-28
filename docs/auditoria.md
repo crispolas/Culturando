@@ -114,3 +114,13 @@ Para lançar o site: remova os seis exemplos listados no README, forneça conte�
 Nome atualizado no hero, navegação, rodapé, favicon, cartazes, conteúdo, títulos, Open Graph, documentação e verificação de publicação. O pacote npm também passa a se chamar `culturando`. As capturas e logs anteriores foram preservados como registro histórico.
 
 `npm run check`, `npm run audit`, `npm test` (9 aprovados) e `npm run build` passaram. O Chromium verificou a identidade, metadados, páginas de evento e ausência de overflow em 1440×900 e 390×844. Capturas atualizadas: [desktop](evidence/culturando-1440.png) e [celular](evidence/culturando-390.png).
+
+## Revisão fotográfica
+
+A pedido do usuário, os seis cartazes tipográficos de demonstração foram substituídos por fotografias reais de fonte verificável e licença CC0 declarada pela distribuição. Elas são identificadas como ilustrativas; não há afirmação de que mostrem os eventos fictícios ou locais de Palmas. [Fontes e licenças](image-sources.md).
+
+As fotos aparecem em cores naturais, sem molduras de cartaz no carrossel. A agenda usa janela 3:4 com posição ajustável por evento; a página individual preserva a imagem inteira. Descrição alternativa, crédito e origem são campos opcionais no frontmatter. A revisão da imagem integra sua URL para atualizar o cache também nos compartilhamentos. O duotone fica nas letras do hero; a colagem usa fotografias naturais e inclinações menores. Alguns slogans foram substituídos por informações diretas.
+
+Verificações: `npm run check` (zero erros/avisos), `npm run audit`, `npm test` (9 aprovados) e `npm run build` passaram. Playwright/Chromium em 1440×900 e 390×844 percorreu as seis fotos e confirmou proporção 3:4, ausência de filtro na fotografia, créditos, texto alternativo, URL com revisão e proporção original no detalhe. Axe WCAG A/AA e 2.1 AA não apontou ocorrências nas páginas iniciais verificadas.
+
+Capturas: [desktop](evidence/fotos-1440.png), [celular](evidence/fotos-390.png). [Resultado Axe](evidence/fotos-axe.json). Google e Wikimedia estavam bloqueados pela política de rede; os arquivos vieram dos repositórios oficiais indicados na documentação de fontes, sem incorporar o layout ou o código dos temas de origem.

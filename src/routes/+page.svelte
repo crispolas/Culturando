@@ -41,7 +41,7 @@
   <noscript>Ative o JavaScript para consultar a programação atualizada.</noscript>
   <section id="sobre" class="about" aria-labelledby="about-heading">
     <div class="section-meta"><span>03 / Sobre o Culturando</span><span>Daqui. Para quem está aqui.</span></div>
-    <div class="about-copy"><h2 id="about-heading">A cidade<br />também<br />é palco<span>.</span></h2><div><p>A cultura de Palmas não cabe numa moldura.</p><p>O Culturando reúne encontros, sons, movimentos e histórias que acontecem por aqui. Uma agenda independente, feita por curadoria, para aproximar quem faz e quem vive a cultura.</p><p class="small">Um lugar para a programação da cidade.<br />E para você fazer parte da plateia.</p><a href="#eventos">Voltar à programação ↑</a></div></div>
+    <div class="about-copy"><h2 id="about-heading">Cultura<br />em Palmas<span>.</span></h2><div><p>A programação cultural da cidade, em um lugar.</p><p>Consulte datas, horários e informações de cada evento. Use as categorias para escolher a programação ou veja no mapa os eventos com endereço cadastrado.</p><a href="#eventos">Voltar à programação ↑</a></div></div>
   </section>
   <footer><a href="#inicio" class="footer-mark">CULTURANDO</a><div><span>Seu mapa cultural.</span><span>Palmas, Tocantins / Brasil</span></div><a href="#inicio">De volta ao começo ↑</a></footer>
 </main>
@@ -56,7 +56,6 @@
   .about-copy > div { max-width: 29rem; }
   .about p:first-child { font-family: var(--display); font-size: clamp(1.5rem, 2.4vw, 2.6rem); font-weight: 700; line-height: 1.05; letter-spacing: -.04em; margin-bottom: 1.5rem; }
   .about p { font-size: .95rem; }
-  .about .small { font-size: .75rem; margin-top: 1.3rem; }
   .about a { display: inline-block; margin-top: 2rem; font-size: .8rem; }
   footer { padding: 2.5rem var(--gutter) 2rem; }
   .footer-mark { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(3rem, 13.5vw, 14rem); line-height: 1; letter-spacing: -.075em; text-decoration: none; }
