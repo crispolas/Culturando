@@ -168,12 +168,9 @@
         {#if status === 'failed'}<span>A programação continua disponível na agenda.</span><button onclick={() => void initialize()}>Tentar novamente</button>{/if}
       </div>
     {/if}
-    <div class="map-panel">
-      <div><span class="panel-label">Ponto de encontro</span><p>{selectedVenue?.nome || 'Cultura também acontece sem endereço fixo.'}</p><span class="panel-note">{selectedVenue?.endereço || `${events.length - located.features.length} evento(s) online ou sem local fixo nesta seleção.`}</span></div>
-      {#if selected}<a href="#eventos" onclick={() => { if (fullScreen) toggleFullScreen(); }}>Ver na agenda <Arrow /></a>{/if}
-    </div>
+
   </div>
-  <div class="map-note"><p>{located.features.length} evento(s) com local nesta seleção. Sem endereço fixo? O evento continua na agenda.</p><span>Dados &#169; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · <a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">OpenMapTiles</a></span></div>
+  <div class="map-note"><span>Dados &#169; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · <a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">OpenMapTiles</a></span></div>
 </section>
 <style>
   .map-section { padding: 1.5rem var(--gutter) 2rem; }
@@ -193,13 +190,7 @@
   .map-status p { font-family: var(--display); font-weight: 800; font-size: 1.7rem; letter-spacing: -.05em; line-height: 1; }
   .map-status span { display: block; font-size: .8rem; margin-top: .7rem; }
   .map-status button { margin-top: 1rem; border: var(--line); background: var(--mint); color: var(--ink); padding: .5rem .75rem; font-size: .75rem; }
-  .map-panel { position: absolute; bottom: 2.2rem; left: 1rem; right: 1rem; padding: 1rem 1.2rem; background: var(--mint); color: var(--ink); border: var(--line); box-shadow: 4px 4px 0 var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
-  .panel-label { font-size: .55rem; text-transform: uppercase; letter-spacing: .1em; }
-  .map-panel p { font-family: var(--display); font-weight: 750; letter-spacing: -.035em; font-size: 1.2rem; line-height: 1.1; margin: .35rem 0; }
-  .panel-note { font-size: .65rem; }
-  .map-panel a { font-size: .7rem; display: flex; gap: .7rem; white-space: nowrap; align-items: center; }
   .map-note { display: flex; justify-content: space-between; gap: 2rem; margin-top: 1rem; font-size: .6rem; }
-  .map-note p { max-width: 35rem; }
   .fullscreen { position: fixed; inset: 0; z-index: 60; height: 100dvh; }
   .map-section :global(.maplibregl-map), :global(.maplibregl-ctrl) { font-family: var(--body); }
   .map-section :global(.maplibregl-ctrl-attrib) { background: var(--paper); color: var(--ink); font-size: 11px; }
@@ -223,8 +214,6 @@
     .filters { gap: .6rem 1rem; margin-bottom: 1.2rem; }
     .filters button { font-size: 1.15rem; min-height: 40px; }
     .map-frame { height: 75svh; min-height: 550px; margin-inline: calc(-1 * var(--gutter)); border-inline: 0; }
-    .map-panel { left: .8rem; right: .8rem; bottom: 2.5rem; padding: .8rem; flex-direction: column; align-items: flex-start; gap: .6rem; }
-    .map-panel p { font-size: 1.1rem; }
     .map-label { left: 1rem; }
     .fullscreen { margin-inline: 0; height: 100dvh; }
     .fullscreen-button { top: .7rem; right: 3rem; bottom: auto; font-size: .65rem; padding: .5rem; }

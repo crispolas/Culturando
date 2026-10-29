@@ -23,6 +23,10 @@
   let transitioning = false;
   let touchX = 0;
   let dragged = false;
+  let mouseX = 0;
+  let mouseOffset = 0;
+  let mousePointer: number | undefined;
+  let dragging = $state(false);
   const venue = $derived(venues.find((place) => place.slug === opened?.venue));
 
   function paint() {
@@ -98,7 +102,7 @@
     function animate(now: number) {
       const elapsed = Math.min(now - (previous || now), 40);
       previous = now;
-      if (inView && !document.hidden && !reduce.matches && !general && !hovered && !focused && !paused && !opened) {
+      if (inView && !document.hidden && !reduce.matches && !general && !hovered && !focused && !paused && !opened && mousePointer === undefined) {
         offset += direction * elapsed * .035; paint();
       }
       frame = requestAnimationFrame(animate);
@@ -107,6 +111,18 @@
     return () => { cancelAnimationFrame(frame); observer.disconnect(); resize.disconnect(); };
   });
 </script>
+
+<svelte:window
+  onpointermove={(event) => {
+    if (event.pointerId !== mousePointer) return;
+    const distance = mouseX - event.clientX;
+    if (!dragged && Math.abs(distance) <= 5) return;
+    dragged = true; dragging = true;
+    offset = mouseOffset + distance; paint();
+  }}
+  onpointerup={(event) => { if (event.pointerId === mousePointer) { mousePointer = undefined; dragging = false; } }}
+  onpointercancel={(event) => { if (event.pointerId === mousePointer) { mousePointer = undefined; dragging = false; } }}
+/>
 
 <section class="events" aria-labelledby="events-heading">
   <header>
@@ -120,7 +136,12 @@
       {/if}
     </div>
   </header>
-  <div bind:this={rail} class="rail" hidden={general} role="region" aria-roledescription="carrossel" aria-label="Eventos em destaque"
+  <div bind:this={rail} class="rail" class:dragging hidden={general} role="region" aria-roledescription="carrossel" aria-label="Eventos em destaque"
+    onpointerdown={(event) => {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      mousePointer = event.pointerId; mouseX = event.clientX; mouseOffset = offset; dragged = false;
+    }}
+    ondragstart={(event) => event.preventDefault()}
     onpointerenter={() => hovered = true} onpointerleave={() => hovered = false}
     onfocusin={(event) => {
       focused = true;
@@ -136,7 +157,7 @@
     <div class="track" bind:this={track}>
       <div class="group" bind:this={group}>
         {#each events as event (event.slug)}
-          <button class="photo" class:chosen={opened?.slug === event.slug && origin?.dataset.slug === event.slug && !origin?.dataset.copy} data-slug={event.slug} aria-label={`Abrir ${event.title}`} onclick={(click) => { if (!dragged) open(event, click.currentTarget); }}>
+          <button class="photo" class:chosen={opened?.slug === event.slug && origin?.dataset.slug === event.slug && !origin?.dataset.copy} data-slug={event.slug} aria-label={`Abrir ${event.title}`} onclick={(click) => { if (click.detail === 0 || !dragged) open(event, click.currentTarget); }}>
             <img src={`${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`} style:object-position={event.imagePosition || '50% 50%'} alt={event.imageAlt || `Cartaz de ${event.title}`} width="300" height="400" decoding="async" />
             <span>{event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}{#if event.example}<small>Exemplo fictício</small>{/if}</span>
           </button>
@@ -145,7 +166,7 @@
       {#each Array(copies - 1) as _, copy}
         <div class="group duplicate" aria-hidden="true" >
           {#each events as event (event.slug)}
-            <button class="photo" class:chosen={opened?.slug === event.slug && origin?.dataset.copy === String(copy)} data-copy={copy} data-slug={event.slug} tabindex="-1" aria-label={`Abrir ${event.title}`} onclick={(click) => { if (!dragged) open(event, click.currentTarget); }}>
+            <button class="photo" class:chosen={opened?.slug === event.slug && origin?.dataset.copy === String(copy)} data-copy={copy} data-slug={event.slug} tabindex="-1" aria-label={`Abrir ${event.title}`} onclick={(click) => { if (click.detail === 0 || !dragged) open(event, click.currentTarget); }}>
               <img src={`${base}/cartazes/${event.slug}.jpg?v=${event.posterRevision}`} style:object-position={event.imagePosition || '50% 50%'} alt="" width="300" height="400" decoding="async" />
               <span>{event.title.replace(/^Exemplo fictício\s*[—-]\s*/, '')}{#if event.example}<small>Exemplo fictício</small>{/if}</span>
             </button>
@@ -201,6 +222,9 @@
   .controls .mode { font-size: .7rem; font-weight: 700; margin-right: .8rem; }
   .controls button:hover { background: var(--sun); }
   .rail { overflow: hidden; touch-action: pan-y; padding-block: .4rem 1rem; }
+  .rail { cursor: grab; user-select: none; }
+  .rail .photo { cursor: inherit; }
+  .rail.dragging { cursor: grabbing; }
   .rail[hidden] { display: none; }
   .track, .group { display: flex; width: max-content; }
   .track { will-change: transform; }
